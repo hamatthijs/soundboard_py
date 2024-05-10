@@ -6,7 +6,7 @@ destination = root/"files"
 
 def command():
     text = input("command: ").split(" ", 1)
-    if len(text) == 0 or text[0] == "" or text[0] == " " or text[0] == None:
+    if len(text) == 0 or text[0] in {"", " "} or text[0] is None:
         command()
     if text[0]:
         if text[0] in ["help", "?"]:
@@ -88,7 +88,7 @@ def givelist():
     command()
 
 def remove(file):
-    file = file+".mp3"
+    file = f"{file}.mp3"
     print("--------------------")
     print(f"Removing {file}")
     print("--------------------")
@@ -102,7 +102,7 @@ def incorrect_usage(passed_command):
     if passed_command == "play":
         print("Usage: play <sound>")
     elif passed_command == "upload":
-        print("Usage: upload <sound>")
+        print("Usage: upload <path>")
     elif passed_command == "remove":
         print("Usage: remove <sound>")
     print("--------------------")
