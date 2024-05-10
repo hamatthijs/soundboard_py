@@ -1,11 +1,14 @@
 import os
 from pathlib import Path
+
 root = Path(__file__).parent
+
+os.mkdir(root/"files")
+
 
 def command():
     text = input("command: ").split(" ", 1)
-    print(text)
-    if len(text) == 0:
+    if len(text) == 0 or text[0] == "" or text[0] == " ":
         command()
     if text[0]:
         if text[0] in ["help", "?"]:
@@ -22,6 +25,11 @@ def command():
                 upload(text[1])
             else:
                 incorrect_usage("upload")
+        elif text[0] == "list":
+            givelist()
+        else:
+            unknown()
+    
 
 def unknown():
     print("Unknown command")
@@ -32,7 +40,10 @@ def help():
     print("help - show this message")
     print("exit - exit the program")
     print("play - play a sound")
-    print("stop - stop playing a sound")
+    print("upload - upload a sound")
+    print("list - list available sounds")
+    
+    print("Usage: <command> <argument>")
     command()
 
 def intro():
@@ -52,6 +63,15 @@ def upload(file):
     os.system(f"copy {file} {destination}")
     command()
 
+def givelist():
+    print("Available sounds:")
+    files = set()
+    for file in os.listdir(root/"files"):
+        filename = str(file).rsplit(".",1)[0]
+        files.add(filename)
+    files_str=" ".join(files or ["No sounds available"])
+    print(files_str)
+    command()
 
 def incorrect_usage(passed_command):
     print(f"Incorrect usage of {passed_command}")
@@ -60,6 +80,5 @@ def incorrect_usage(passed_command):
     elif passed_command == "upload":
         print("Usage: upload <sound>")
     command()
-
 
 intro()
